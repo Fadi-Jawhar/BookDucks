@@ -402,7 +402,7 @@ export interface ApiBookBook extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    userProfiles: Schema.Attribute.Relation<
+    user_profiles: Schema.Attribute.Relation<
       'manyToMany',
       'api::user-profile.user-profile'
     >;
@@ -482,7 +482,6 @@ export interface ApiThemeTheme extends Struct.CollectionTypeSchema {
 export interface ApiUserProfileUserProfile extends Struct.CollectionTypeSchema {
   collectionName: 'user_profiles';
   info: {
-    description: '';
     displayName: 'UserProfile';
     pluralName: 'user-profiles';
     singularName: 'user-profile';
@@ -967,7 +966,6 @@ export interface PluginUsersPermissionsUser
   };
   options: {
     draftAndPublish: false;
-    timestamps: true;
   };
   attributes: {
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
@@ -1003,16 +1001,16 @@ export interface PluginUsersPermissionsUser
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    user_profile: Schema.Attribute.Relation<
-      'oneToOne',
-      'api::user-profile.user-profile'
-    >;
     username: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique &
       Schema.Attribute.SetMinMaxLength<{
         minLength: 3;
       }>;
+    userProfile: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::user-profile.user-profile'
+    >;
   };
 }
 

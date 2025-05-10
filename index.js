@@ -71,8 +71,9 @@ const renderBooks = async () => {
   document.querySelectorAll(".save-btn").forEach(btn => {
     btn.addEventListener("click", async (e) => {
       const bookId = e.target.dataset.id;
-      const token = localStorage.getItem("token");
-      const userProfileId = localStorage.getItem("userProfileId");
+      const token = sessionStorage.getItem("token");
+      const userProfileId = sessionStorage.getItem("userProfileId");
+
   
       try {
         await axios.put(`${BASE_URL}/api/user-profiles/${userProfileId}`, {
@@ -150,33 +151,29 @@ const login = async () => {
   const password = document.querySelector("#login-password").value;
 
   try {
-    // 1. Logga in
-    const response = await axios.post(`${BASE_URL}/api/auth/local`, {
+    // 🔐 1. Logga in
+    const res = await axios.post(`${BASE_URL}/api/auth/local`, {
       identifier,
       password,
     });
 
-    const jwt = response.data.jwt;
-    localStorage.setItem("token", jwt);
+    const jwt = res.data.jwt;
+    sessionStorage.setItem("token", jwt);
 
-    // 2. Hämta användardata
+    // 👤 2. Hämta användaren
     const userRes = await axios.get(`${BASE_URL}/api/users/me`, {
-      headers: { Authorization: `Bearer ${jwt}` }
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      }
     });
 
     const user = userRes.data;
     document.querySelector("#user-info").textContent = `Inloggad som: ${user.username}`;
+    sessionStorage.setItem("userId", user.id);
+    sessionStorage.setItem("username", user.username);
 
-    // 3. Hämta första userprofil
-    const profileRes = await axios.get(`${BASE_URL}/api/user-profiles?pLevel`, {
-      headers: { Authorization: `Bearer ${jwt}` }
-    });
-
-    const userProfile = profileRes.data.data[0];
-    localStorage.setItem("userProfileId", userProfile.id);
-    localStorage.setItem("userProfileData", JSON.stringify(userProfile));
-
-    console.log("✅ UserProfile hämtad och sparad:", userProfile);
+    // ✅ Klar – inget mer!
+    console.log("✅ Inloggad som", user.username);
 
   } catch (err) {
     console.error("❌ Fel vid inloggning:", err.response?.data || err);
@@ -184,10 +181,16 @@ const login = async () => {
   }
 };
 
+const logout = () => {
+  sessionStorage.clear();
+  location.reload(); // eller redirect om du har en separat login.html
+};
+
 
 // Event listeners
 document.querySelector("#register-btn").addEventListener("click", register);
 document.querySelector("#login-btn").addEventListener("click", login);
+document.querySelector("#logout-btn").addEventListener("click", logout);
 
 
 // Initiera sidan

@@ -9,7 +9,7 @@
     "displayName": "User"
   },
   "options": {
-    "timestamps": true
+    "draftAndPublish": false
   },
   "attributes": {
     "username": {
@@ -71,11 +71,11 @@
       "target": "api::rating.rating",
       "mappedBy": "user"
     },
-    "user_profile": {
+    "userProfile": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::user-profile.user-profile",
-      "mappedBy": "user"
+      "inversedBy": "user"
     }
   }
 }

@@ -38,17 +38,17 @@
         "audios"
       ]
     },
-    "userProfiles": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::user-profile.user-profile",
-      "inversedBy": "toReadList"
-    },
     "rating": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::rating.rating",
       "mappedBy": "book"
+    },
+    "user_profiles": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::user-profile.user-profile",
+      "mappedBy": "toReadList"
     }
   }
 }
