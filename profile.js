@@ -1,85 +1,93 @@
 const BASE_URL = "http://localhost:1337";
+const savedBooksContainer = document.querySelector("#saved-books");
 
-const renderToReadList = () => {
-  const container = document.querySelector("#to-read-list");
-  const sortOption = document.querySelector("#sort").value;
+const fetchSavedBooks = async () => {
+  const token = sessionStorage.getItem("token");
+  const userId = sessionStorage.getItem("userId");
 
-  const profile = JSON.parse(localStorage.getItem("userProfileData"));
-  if (!profile || !profile.toReadList) {
-    container.innerHTML = "<p>Inget sparat ännu.</p>";
+  if (!token || !userId) {
+    alert("Du måste vara inloggad.");
+    window.location.href = "index.html";
     return;
   }
 
-  let books = [...profile.toReadList];
-
-  // Sortering
-  books.sort((a, b) => {
-    if (sortOption === "title") return a.title.localeCompare(b.title);
-    if (sortOption === "author") return a.author.localeCompare(b.author);
-    return 0;
-  });
-
-  container.innerHTML = "";
-
-  books.forEach(book => {
-    const div = document.createElement("div");
-    div.classList.add("book-card");
-
-    let imageUrl = "";
-    if (book.cover?.formats?.medium?.url) {
-      imageUrl = `${BASE_URL}${book.cover.formats.medium.url}`;
-    } else if (book.cover?.url) {
-      imageUrl = `${BASE_URL}${book.cover.url}`;
-    }
-
-    div.innerHTML = `
-      <h3>${book.title}</h3>
-      <p><strong>Författare:</strong> ${book.author}</p>
-      <p><strong>Sidor:</strong> ${book.pages}</p>
-      <p><strong>Utgiven:</strong> ${book.published}</p>
-      ${imageUrl ? `<img src="${imageUrl}" width="120">` : ""}
-      <button class="remove-btn" data-id="${book.id}">❌ Ta bort</button>
-    `;
-
-    container.appendChild(div);
-  });
-
-  document.querySelectorAll(".remove-btn").forEach(btn => {
-    btn.addEventListener("click", async (e) => {
-      const bookId = e.target.dataset.id;
-      await removeBookFromList(bookId);
-    });
-  });
-};
-
-const removeBookFromList = async (bookId) => {
-  const token = localStorage.getItem("token");
-  const profileId = localStorage.getItem("userProfileId");
-
   try {
-    await axios.put(`${BASE_URL}/api/user-profiles/${profileId}`, {
-      data: {
-        toReadList: {
-          disconnect: [bookId]
-        }
-      }
-    }, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-
-    const updatedProfile = await axios.get(`${BASE_URL}/api/user-profiles/${profileId}?pLevel`, {
+    const res = await axios.get(`${BASE_URL}/api/users/${userId}?populate=toReadList.cover`, {
       headers: { Authorization: `Bearer ${token}` }
     });
 
-    localStorage.setItem("userProfileData", JSON.stringify(updatedProfile.data.data));
-    renderToReadList();
+    const books = res.data.toReadList || [];
+
+    if (books.length === 0) {
+      savedBooksContainer.innerHTML = "<p>Du har inga sparade böcker ännu.</p>";
+      return;
+    }
+
+    savedBooksContainer.innerHTML = "";
+
+    books.forEach(book => {
+      const img = book.cover?.formats?.thumbnail?.url
+        ? `${BASE_URL}${book.cover.formats.thumbnail.url}`
+        : "";
+
+      const card = document.createElement("div");
+      card.classList.add("book-card");
+      card.innerHTML = `
+        <h3>${book.title}</h3>
+        <p>Författare: ${book.author}</p>
+        <p>Sidor: ${book.pages}</p>
+        <p>Utgiven: ${book.published}</p>
+        ${img ? `<img src="${img}" width="120" />` : ""}
+        <button class="remove-btn" data-id="${book.id}">❌ Ta bort</button>
+      `;
+      savedBooksContainer.appendChild(card);
+    });
+
+    document.querySelectorAll(".remove-btn").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        const bookId = btn.dataset.id;
+        await removeBook(bookId);
+      });
+    });
 
   } catch (err) {
-    console.error("Kunde inte ta bort bok:", err);
+    console.error("❌ Kunde inte hämta sparade böcker:", err);
+    alert("Fel vid hämtning av sparade böcker.");
   }
 };
 
-document.querySelector("#sort").addEventListener("change", renderToReadList);
-document.addEventListener("DOMContentLoaded", renderToReadList);
+const removeBook = async (bookId) => {
+  const token = sessionStorage.getItem("token");
+  const userId = sessionStorage.getItem("userId");
+
+  try {
+    // Hämta användarens nuvarande lista
+    const res = await axios.get(`${BASE_URL}/api/users/${userId}?populate=toReadList`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    const currentList = res.data.toReadList.map(book => book.id);
+    const updatedList = currentList.filter(id => id !== Number(bookId));
+
+    await axios.put(`${BASE_URL}/api/users/${userId}`, {
+      toReadList: updatedList
+    }, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    alert("Bok borttagen från listan.");
+    fetchSavedBooks(); // Uppdatera vyn
+
+  } catch (err) {
+    console.error("❌ Kunde inte ta bort bok:", err);
+    alert("Något gick fel vid borttagning.");
+  }
+};
+
+const logout = () => {
+  sessionStorage.clear();
+  window.location.href = "index.html";
+};
+
+document.querySelector("#logout-btn").addEventListener("click", logout);
+document.addEventListener("DOMContentLoaded", fetchSavedBooks);

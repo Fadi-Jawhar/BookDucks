@@ -4,23 +4,11 @@
   "info": {
     "singularName": "user-profile",
     "pluralName": "user-profiles",
-    "displayName": "UserProfile"
+    "displayName": "UserProfile",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
   },
-  "attributes": {
-    "toReadList": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::book.book",
-      "inversedBy": "user_profiles"
-    },
-    "user": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "plugin::users-permissions.user",
-      "mappedBy": "userProfile"
-    }
-  }
+  "attributes": {}
 }

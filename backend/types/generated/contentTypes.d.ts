@@ -402,9 +402,9 @@ export interface ApiBookBook extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    user_profiles: Schema.Attribute.Relation<
+    users: Schema.Attribute.Relation<
       'manyToMany',
-      'api::user-profile.user-profile'
+      'plugin::users-permissions.user'
     >;
   };
 }
@@ -445,10 +445,6 @@ export interface ApiRatingRating extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    user: Schema.Attribute.Relation<
-      'manyToOne',
-      'plugin::users-permissions.user'
-    >;
   };
 }
 
@@ -482,6 +478,7 @@ export interface ApiThemeTheme extends Struct.CollectionTypeSchema {
 export interface ApiUserProfileUserProfile extends Struct.CollectionTypeSchema {
   collectionName: 'user_profiles';
   info: {
+    description: '';
     displayName: 'UserProfile';
     pluralName: 'user-profiles';
     singularName: 'user-profile';
@@ -500,14 +497,9 @@ export interface ApiUserProfileUserProfile extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    toReadList: Schema.Attribute.Relation<'manyToMany', 'api::book.book'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    user: Schema.Attribute.Relation<
-      'oneToOne',
-      'plugin::users-permissions.user'
-    >;
   };
 }
 
@@ -998,6 +990,7 @@ export interface PluginUsersPermissionsUser
       'manyToOne',
       'plugin::users-permissions.role'
     >;
+    toReadList: Schema.Attribute.Relation<'manyToMany', 'api::book.book'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1007,10 +1000,6 @@ export interface PluginUsersPermissionsUser
       Schema.Attribute.SetMinMaxLength<{
         minLength: 3;
       }>;
-    userProfile: Schema.Attribute.Relation<
-      'oneToOne',
-      'api::user-profile.user-profile'
-    >;
   };
 }
 

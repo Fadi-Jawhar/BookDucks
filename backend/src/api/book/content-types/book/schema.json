@@ -44,10 +44,10 @@
       "target": "api::rating.rating",
       "mappedBy": "book"
     },
-    "user_profiles": {
+    "users": {
       "type": "relation",
       "relation": "manyToMany",
-      "target": "api::user-profile.user-profile",
+      "target": "plugin::users-permissions.user",
       "mappedBy": "toReadList"
     }
   }

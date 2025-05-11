@@ -68,14 +68,13 @@
     "ratings": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::rating.rating",
-      "mappedBy": "user"
+      "target": "api::rating.rating"
     },
-    "userProfile": {
+    "toReadList": {
       "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::user-profile.user-profile",
-      "inversedBy": "user"
+      "relation": "manyToMany",
+      "target": "api::book.book",
+      "inversedBy": "users"
     }
   }
 }
