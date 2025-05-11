@@ -1,5 +1,6 @@
 const BASE_URL = "http://localhost:1337";
 const savedBooksContainer = document.querySelector("#saved-books");
+const sortSelect = document.querySelector("#sort-select");
 
 const fetchSavedBooks = async () => {
   const token = sessionStorage.getItem("token");
@@ -16,7 +17,15 @@ const fetchSavedBooks = async () => {
       headers: { Authorization: `Bearer ${token}` }
     });
 
-    const books = res.data.toReadList || [];
+    let books = res.data.toReadList || [];
+
+    // Sortering
+    const sortBy = sortSelect.value;
+    if (sortBy === "title") {
+      books.sort((a, b) => a.title.localeCompare(b.title));
+    } else if (sortBy === "author") {
+      books.sort((a, b) => a.author.localeCompare(b.author));
+    }
 
     if (books.length === 0) {
       savedBooksContainer.innerHTML = "<p>Du har inga sparade böcker ännu.</p>";
@@ -24,7 +33,10 @@ const fetchSavedBooks = async () => {
     }
 
     savedBooksContainer.innerHTML = "";
-
+    const latest = document.querySelector("#sort-select")?.value || "";
+    if (!latest) {
+    books.reverse(); // Nyaste sist i listan → först på sidan
+    }
     books.forEach(book => {
       const img = book.cover?.formats?.thumbnail?.url
         ? `${BASE_URL}${book.cover.formats.thumbnail.url}`
@@ -34,10 +46,10 @@ const fetchSavedBooks = async () => {
       card.classList.add("book-card");
       card.innerHTML = `
         <h3>${book.title}</h3>
-        <p>Författare: ${book.author}</p>
-        <p>Sidor: ${book.pages}</p>
-        <p>Utgiven: ${book.published}</p>
-        ${img ? `<img src="${img}" width="120" />` : ""}
+        <p><strong>Författare:</strong> ${book.author}</p>
+        <p><strong>Sidor:</strong> ${book.pages}</p>
+        <p><strong>Utgiven:</strong> ${book.published}</p>
+        ${img ? `<img src="${img}" width="120" alt="Bokomslag" />` : ""}
         <button class="remove-btn" data-id="${book.id}">❌ Ta bort</button>
       `;
       savedBooksContainer.appendChild(card);
@@ -50,8 +62,7 @@ const fetchSavedBooks = async () => {
       });
     });
 
-  } catch (err) {
-    console.error("❌ Kunde inte hämta sparade böcker:", err);
+  } catch {
     alert("Fel vid hämtning av sparade böcker.");
   }
 };
@@ -61,7 +72,6 @@ const removeBook = async (bookId) => {
   const userId = sessionStorage.getItem("userId");
 
   try {
-    // Hämta användarens nuvarande lista
     const res = await axios.get(`${BASE_URL}/api/users/${userId}?populate=toReadList`, {
       headers: { Authorization: `Bearer ${token}` }
     });
@@ -76,11 +86,10 @@ const removeBook = async (bookId) => {
     });
 
     alert("Bok borttagen från listan.");
-    fetchSavedBooks(); // Uppdatera vyn
+    fetchSavedBooks();
 
-  } catch (err) {
-    console.error("❌ Kunde inte ta bort bok:", err);
-    alert("Något gick fel vid borttagning.");
+  } catch {
+    alert("Kunde inte ta bort bok.");
   }
 };
 
@@ -90,4 +99,5 @@ const logout = () => {
 };
 
 document.querySelector("#logout-btn").addEventListener("click", logout);
+sortSelect.addEventListener("change", fetchSavedBooks);
 document.addEventListener("DOMContentLoaded", fetchSavedBooks);

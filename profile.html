@@ -10,48 +10,25 @@
   <body>
     <header>
       <h1>📚 Min profil</h1>
-
+      <a href="index.html">⬅ Tillbaka</a>
       <button id="logout-btn">Logga ut</button>
     </header>
 
     <main>
       <section>
         <h2>Sparade böcker</h2>
+
+        <!-- Sorteringsmeny -->
+        <label for="sort-select">Sortera efter:</label>
+        <select id="sort-select">
+          <option value="">Senaste</option>
+          <option value="title">Titel</option>
+          <option value="author">Författare</option>
+        </select>
+
+        <!-- Lista för sparade böcker -->
         <div id="saved-books"></div>
       </section>
     </main>
   </body>
 </html>
-<!-- <!DOCTYPE html>
-<html lang="sv">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Min Profil - BookDucks</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script src="profile.js" defer></script>
-</head>
-<body>
-  <header>
-    <h1>📖 Min profilsida</h1>
-    <a href="index.html">⬅ Tillbaka</a>
-    <p id="user-info"></p>
-    <button id="logout-btn">Logga ut</button>
-  </header>
-
-  <main>
-    <section>
-      <h2>📚 Att läsa-lista</h2>
-      <div>
-        <label>Sortera efter:</label>
-        <select id="sort-readlist">
-          <option value="title">Titel (A–Ö)</option>
-          <option value="author">Författare (A–Ö)</option>
-        </select>
-      </div>
-      <div id="read-list"></div>
-    </section>
-  </main>
-</body>
-</html> -->
