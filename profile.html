@@ -17,17 +17,25 @@
     <main>
       <section>
         <h2>Sparade böcker</h2>
-
-        <!-- Sorteringsmeny -->
         <label for="sort-select">Sortera efter:</label>
         <select id="sort-select">
-          <option value="">Senaste</option>
+          <option value="">Senast sparade</option>
           <option value="title">Titel</option>
           <option value="author">Författare</option>
         </select>
-
-        <!-- Lista för sparade böcker -->
         <div id="saved-books"></div>
+      </section>
+
+      <section>
+        <h2>Betygsatta böcker</h2>
+        <label for="rating-sort-select">Sortera efter:</label>
+        <select id="rating-sort-select">
+          <option value="">Standard</option>
+          <option value="title">Titel</option>
+          <option value="author">Författare</option>
+          <option value="score">Betyg</option>
+        </select>
+        <div id="rated-books"></div>
       </section>
     </main>
   </body>

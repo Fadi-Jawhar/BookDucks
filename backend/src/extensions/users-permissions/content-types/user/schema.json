@@ -65,16 +65,17 @@
       "inversedBy": "users",
       "configurable": false
     },
-    "ratings": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::rating.rating"
-    },
     "toReadList": {
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::book.book",
       "inversedBy": "users"
+    },
+    "ratings": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::rating.rating",
+      "mappedBy": "user"
     }
   }
 }
