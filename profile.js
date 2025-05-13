@@ -102,8 +102,6 @@
 // sortSelect.addEventListener("change", fetchSavedBooks);
 // document.addEventListener("DOMContentLoaded", fetchSavedBooks);
 
-const BASE_URL = "http://localhost:1337";
-
 const savedBooksContainer = document.querySelector("#saved-books");
 const ratedBooksContainer = document.querySelector("#rated-books");
 const sortSelect = document.querySelector("#sort-select");
@@ -270,7 +268,8 @@ const logout = () => {
 };
 
 /** Initiera sidan */
-const init = () => {
+const init = async () => {
+  await loadTheme();
   logoutBtn.addEventListener("click", logout);
 
   sortSelect.addEventListener("change", () => {

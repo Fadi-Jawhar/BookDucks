@@ -238,7 +238,7 @@
 //     document.querySelector("#user-info").textContent = `Inloggad som: ${username}`;
 //   }
 // });
-const BASE_URL = "http://localhost:1337";
+
 const bookList = document.querySelector("#book-list");
 const userInfo = document.querySelector("#user-info");
 
@@ -398,50 +398,50 @@ const submitRating = async (bookId, score) => {
 
 
 /** Registrera ny användare */
-const register = async () => {
-  const username = document.querySelector("#register-username").value;
-  const email = document.querySelector("#register-email").value;
-  const password = document.querySelector("#register-password").value;
+// const register = async () => {
+//   const username = document.querySelector("#register-username").value;
+//   const email = document.querySelector("#register-email").value;
+//   const password = document.querySelector("#register-password").value;
 
-  try {
-    await axios.post(`${BASE_URL}/api/auth/local/register`, {
-      username, email, password
-    });
+//   try {
+//     await axios.post(`${BASE_URL}/api/auth/local/register`, {
+//       username, email, password
+//     });
 
-    alert("Registrering lyckades!");
-  } catch {
-    alert("Fel vid registrering.");
-  }
-};
+//     alert("Registrering lyckades!");
+//   } catch {
+//     alert("Fel vid registrering.");
+//   }
+// };
 
-/** Logga in användare */
-const login = async () => {
-  const identifier = document.querySelector("#login-identifier").value;
-  const password = document.querySelector("#login-password").value;
+// /** Logga in användare */
+// const login = async () => {
+//   const identifier = document.querySelector("#login-identifier").value;
+//   const password = document.querySelector("#login-password").value;
 
-  try {
-    const response = await axios.post(`${BASE_URL}/api/auth/local`, {
-      identifier, password
-    });
+//   try {
+//     const response = await axios.post(`${BASE_URL}/api/auth/local`, {
+//       identifier, password
+//     });
 
-    const jwt = response.data.jwt;
-    sessionStorage.setItem("token", jwt);
+//     const jwt = response.data.jwt;
+//     sessionStorage.setItem("token", jwt);
 
-    const userRes = await axios.get(`${BASE_URL}/api/users/me`, {
-      headers: { Authorization: `Bearer ${jwt}` }
-    });
+//     const userRes = await axios.get(`${BASE_URL}/api/users/me`, {
+//       headers: { Authorization: `Bearer ${jwt}` }
+//     });
 
-    const user = userRes.data;
-    sessionStorage.setItem("userId", user.id);
-    sessionStorage.setItem("username", user.username);
-    userInfo.textContent = `Inloggad som: ${user.username}`;
+//     const user = userRes.data;
+//     sessionStorage.setItem("userId", user.id);
+//     sessionStorage.setItem("username", user.username);
+//     userInfo.textContent = `Inloggad som: ${user.username}`;
 
-    location.reload();
+//     location.reload();
 
-  } catch {
-    alert("Inloggning misslyckades.");
-  }
-};
+//   } catch {
+//     alert("Inloggning misslyckades.");
+//   }
+// };
 
 /** Logga ut användare */
 const logout = () => {
@@ -449,33 +449,7 @@ const logout = () => {
   location.reload();
 };
 
-/** Temahantering */
-const loadTheme = async () => {
-  try {
-    const res = await axios.get(`${BASE_URL}/api/themes?filters[active][$eq]=true`);
-    const theme = res.data.data[0]?.name || "light";
-    applyTheme(theme);
-  } catch {
-    applyTheme("light");
-  }
-};
 
-const applyTheme = (theme) => {
-  const root = document.documentElement;
-  if (theme === "dark") {
-    root.style.setProperty("--bg", "#1e1e1e");
-    root.style.setProperty("--text", "#f5f5f5");
-    root.style.setProperty("--primary", "#333");
-  } else if (theme === "sepia") {
-    root.style.setProperty("--bg", "#f4ecd8");
-    root.style.setProperty("--text", "#5b4636");
-    root.style.setProperty("--primary", "#a58c6f");
-  } else {
-    root.style.setProperty("--bg", "#ffffff");
-    root.style.setProperty("--text", "#000000");
-    root.style.setProperty("--primary", "#0055aa");
-  }
-};
 
 /** Initiera sidan */
 const init = async () => {
@@ -488,8 +462,8 @@ const init = async () => {
   }
 };
 
-document.querySelector("#register-btn").addEventListener("click", register);
-document.querySelector("#login-btn").addEventListener("click", login);
-document.querySelector("#logout-btn").addEventListener("click", logout);
+//  document.querySelector("#register-btn").addEventListener("click", register);
+//  document.querySelector("#login-btn").addEventListener("click", login);
+ document.querySelector("#logout-btn").addEventListener("click", logout);
 
 document.addEventListener("DOMContentLoaded", init);

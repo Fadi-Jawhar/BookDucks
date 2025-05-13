@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="sv">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Logga in | BookDucks</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="config.js"></script>
+    <script src="theme.js" defer></script>
+    <script src="auth.js" defer></script>
+  </head>
+  <body class="auth-page">
+    <header>
+      <h1>📚 BookDucks</h1>
+    </header>
+
+    <main class="auth-container">
+      <section class="auth-box">
+        <h2>Logga in</h2>
+        <input
+          type="text"
+          id="login-identifier"
+          placeholder="E-post eller användarnamn"
+        />
+        <input type="password" id="login-password" placeholder="Lösenord" />
+        <button id="login-btn">Logga in</button>
+      </section>
+      <section class="auth-box">
+        <h2>Registrera dig</h2>
+        <input type="text" id="register-username" placeholder="Användarnamn" />
+        <input type="email" id="register-email" placeholder="E-post" />
+        <input type="password" id="register-password" placeholder="Lösenord" />
+        <button id="register-btn">Registrera</button>
+      </section>
+
+      <a href="index.html" class="back-link">⬅ Till startsidan</a>
+    </main>
+  </body>
+</html>
