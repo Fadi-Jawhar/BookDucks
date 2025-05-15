@@ -18,12 +18,10 @@ const renderBooks = async () => {
 
     bindBookActions();
 
-  } catch (err) {
-    console.error("❌ Fel vid hämtning av böcker:", err);
+  } catch {
     bookList.innerHTML = `
       <div class="error">
-        <p>Kunde inte hämta böcker. Kontrollera API:t eller CORS.</p>
-        <button onclick="window.location.reload()">Försök igen</button>
+        <p>Kunde inte hämta böcker.</p>
       </div>
     `;
   }
@@ -167,7 +165,11 @@ const init = async () => {
   if (isLoggedIn()) {
     const username = sessionStorage.getItem("username");
     userInfo.textContent = `Välkommen ${username}`;
-  }
+    document.querySelector('a[href="auth.html"]').style.display = "none";
+  } else {
+  document.querySelector('#logout-btn').style.display = "none";
+  document.querySelector('a[href="profile.html"]').style.display = "none";
+}
 };
 
 document.querySelector("#logout-btn").addEventListener("click", logout);
