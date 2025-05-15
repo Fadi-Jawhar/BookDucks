@@ -1,4 +1,4 @@
-/** Registrera ny användare */
+/* Registrera ny användare */
 const register = async () => {
   const username = document.querySelector("#register-username").value;
   const email = document.querySelector("#register-email").value;
@@ -15,7 +15,7 @@ const register = async () => {
   }
 };
 
-/** Logga in användare */
+/* Logga in användare */
 const login = async () => {
   const identifier = document.querySelector("#login-identifier").value;
   const password = document.querySelector("#login-password").value;
@@ -44,7 +44,7 @@ const login = async () => {
   }
 };
 
-/** Init */
+/* Starta */
 document.addEventListener("DOMContentLoaded", () => {
     loadTheme()
     const loginBtn = document.querySelector("#login-btn");

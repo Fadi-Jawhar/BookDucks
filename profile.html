@@ -11,17 +11,18 @@
   </head>
   <body>
     <header>
-      <h1>📚 Min profil</h1>
-      <a href="index.html">⬅ Tillbaka</a>
+      <h1>📚 Min Profilsida</h1>
+      <a href="index.html">⬅ Startsidan</a>
       <button id="logout-btn">Logga ut</button>
+      <p id="user-info" style="text-align: center"></p>
     </header>
-
+    <h1>Mina Böcker</h1>
     <main>
       <section>
         <h2>Sparade böcker</h2>
         <label for="sort-select">Sortera efter:</label>
         <select id="sort-select">
-          <option value="">Senast sparade</option>
+          <option value="latest">Senast Sparade</option>
           <option value="title">Titel</option>
           <option value="author">Författare</option>
         </select>
@@ -32,13 +33,34 @@
         <h2>Betygsatta böcker</h2>
         <label for="rating-sort-select">Sortera efter:</label>
         <select id="rating-sort-select">
-          <option value="">Standard</option>
+          <option value="score">Betyg</option>
+          <option value="latest">Senast Betygsatta</option>
           <option value="title">Titel</option>
           <option value="author">Författare</option>
-          <option value="score">Betyg</option>
         </select>
         <div id="rated-books"></div>
       </section>
     </main>
+    <footer>
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>📚 BookDucks</h3>
+        </div>
+        <div class="footer-section">
+          <h3>Länkar</h3>
+          <a href="index.html">Hem</a>
+          <a href="profile.html">Min Profil</a>
+          <a href="auth.html">Logga in</a>
+        </div>
+        <div class="footer-section">
+          <h3>Kontakt</h3>
+          <p>📧 info@bookducks.se</p>
+          <p>📱 08-702 00 90</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 BookDucks</p>
+      </div>
+    </footer>
   </body>
 </html>
