@@ -35,9 +35,6 @@ const fetchProfileData = async () => {
 
     ratedBooks = ratingsRes.data.data || [];
 
-    console.log("📚 Sparade böcker:", savedBooks);
-    console.log("⭐ Betygsatta böcker:", ratedBooks);
-
     renderSavedBooks(sortBooks(savedBooks, "latest"));
     renderRatedBooks(sortRatings(ratedBooks, "score"));
     bindRemoveButtons();
